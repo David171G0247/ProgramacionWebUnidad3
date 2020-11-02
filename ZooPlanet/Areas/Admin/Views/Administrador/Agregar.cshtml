@@ -1,0 +1,30 @@
+﻿@model ZooPlanet.Models.ViewModels.EspeciesViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<h1>Agregar Especies</h1>
+<form method="post" asp-action="Agregar" asp-controller="Administrador">
+    <label>Nombre:</label>
+    <input required="required" type="text" asp-for="Especie.Especie" />
+    @{
+        Layout = "_Layout";
+    }
+    <label>Clase:</label>
+    <select asp-for="Especie.IdClase" asp-items="@(new SelectList(Model.Clases, "Id", "Nombre"))" required="required">
+        <option value="">Seleccione una clase</option>
+    </select>
+    <label>Habitat:</label>
+    <input required="required" asp-for="Especie.Habitat" type="text" />
+    <label>Peso:</label>
+    <input type="number" step="0.1" asp-for="Especie.Peso" required="required" />
+    <label>Tamaño:</label>
+    <input step="0.1" type="number" asp-for="Especie.Tamaño" required="required" />
+    <label>Observaciones:</label>
+    <textarea required="required" asp-for="Especie.Observaciones" rows="2" cols="20"></textarea>
+    @Html.ValidationSummary()
+    <input type="submit" value="Agregar" id="btnAgregar" />
+    <a href="~/Admin/Administrador">
+        <input type="button" value="Cancelar" id="btnCancelar" formnovalidate="formnovalidate" />
+    </a>
+</form>
