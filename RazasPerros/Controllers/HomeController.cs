@@ -10,7 +10,7 @@ namespace RazasPerros.Controllers
         sistem14_razasContext context = new sistem14_razasContext();
         public IActionResult Index(string id)
         {
-            RazasRepository repos = new RazasRepository(context);
+            RazasRepository repos = new RazasRepository();
             IndexViewModel vm = new IndexViewModel
             {
                 Razas = id == null ? repos.GetRazas() : repos.GetRazasByLetraInicial(id),
@@ -21,7 +21,7 @@ namespace RazasPerros.Controllers
         [Route("Raza/{id}")]
         public IActionResult InfoPerros(string id)
         {
-            RazasRepository repos = new RazasRepository(context);
+            RazasRepository repos = new RazasRepository();
             InfoPerroViewModel vm = new InfoPerroViewModel();
             vm.Raza = repos.GetRazaByNombre(id);
             if (vm.Raza == null)
@@ -34,9 +34,14 @@ namespace RazasPerros.Controllers
                 return View(vm);
             }
         }
+        [Route("RazasPorPais")]
         public IActionResult RazasPorPais()
         {
-            return View();
+            RazasRepository repos = new RazasRepository();
+            RazasPorPaisViewModel vm = new RazasPorPaisViewModel();
+            var paises = context.Paises.Include(x => x.Razas).OrderBy(x => x.Nombre)
+                .Select(x => new RazasPorPaisViewModel { Pais=x.Nombre, Razas= x.Razas });
+            return View(paises);
         }
     }
 }
