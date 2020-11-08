@@ -25,23 +25,23 @@ namespace RazasPerros.Repositories
         }
         public IEnumerable<char> GetLetrasIniciales()
         {
-            return Context.Razas.OrderBy(x => x.Nombre).Select(x => x.Nombre.First()).Distinct();
+            return Context.Razas.OrderBy(x => x.Nombre).Select(x => x.Nombre.First());
         }
         public Razas GetRazaByNombre(string nombre)
         {
             nombre = nombre.Replace("-", " ");
-            return (Razas)Context.Razas
+            return Context.Razas
                 .Include(x => x.Estadisticasraza)
                 .Include(x => x.Caracteristicasfisicas)
                 .Include(x => x.IdPaisNavigation)
-                .Include(x => x.Nombre == nombre);
+                .FirstOrDefault(x => x.Nombre == nombre);
         }
         public IEnumerable<RazaViewModel> Get4RandomRazasExcept(string nombre)
         {
             nombre = nombre.Replace("-", " ");
             Random r = new Random();
-            return Context.Razas
-                .Where(x => x.Nombre != nombre).ToList()
+            return GetAll()
+                .Where(x => x.Nombre != nombre)
                 .OrderBy(x => r.Next())
                 .Take(4)
                 .Select(x => new RazaViewModel { Id = x.Id, Nombre = x.Nombre });
