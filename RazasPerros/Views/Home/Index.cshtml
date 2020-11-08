@@ -6,9 +6,9 @@
 <section class="nav">
     <h3>ABC de Razas</h3>
     <nav>
-        <a href="~/Home/Index">Todas</a>
+        <a href="~/Home/">Todas</a>
 
-        @foreach (var item in Model.LetrasIniciales)
+        @foreach (var item in Model.LetrasIniciales.Distinct())
         {
             <a href="~/Home/Index/@item">@item</a>
         }
